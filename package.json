@@ -19,6 +19,12 @@
   "scripts": {
     "query": "node -r esm ./src/query.js",
     "dump": "node -r esm ./src/dump.js",
-    "scrape": "node -r esm ./src/scrape.js"
+    "scrape": "node -r esm ./src/scrape.js",
+    "lint": "eslint ./src/*.js"
+  },
+  "devDependencies": {
+    "eslint": "^5.15.3",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0"
   }
 }

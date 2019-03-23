@@ -1,15 +1,15 @@
 import rp from 'request-promise-native';
 import fs from 'fs-extra';
 
-const query = url => {
-  return rp(url)
-    .then((content) => {
-      return content;
-    })
+const query = (url) => {
+  const request = rp(url);
+
+  return request
+    .then(content => content)
     .catch((error) => {
-      throw new Error('error');
+      throw new Error('error', error);
     });
-}
+};
 
 const dump = content => new Promise((resolve, reject) => {
   const newFile = fs.createWriteStream(`${__dirname}/../dump/dump.html`);
@@ -34,7 +34,7 @@ query('https://www.instagram.com/rexiecat/?hl=en')
 
         process.exit(0);
       })
-      .catch((error) => {
+      .catch(() => {
         process.exit(1);
       });
   })
