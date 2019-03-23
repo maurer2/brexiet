@@ -8,9 +8,17 @@
   "dependencies": {
     "dotenv": "^7.0.0",
     "esm": "^3.2.18",
-    "node-instagram": "^4.3.0"
+    "fs-extra": "^7.0.1",
+    "jsdom": "^14.0.0",
+    "node-fetch": "^2.3.0",
+    "node-instagram": "^4.3.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "request-promise-native": "^1.0.7"
   },
   "scripts": {
-    "query": "node -r esm ./src/query.js"
+    "query": "node -r esm ./src/query.js",
+    "dump": "node -r esm ./src/dump.js",
+    "scrape": "node -r esm ./src/scrape.js"
   }
 }
