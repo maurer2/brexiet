@@ -1,20 +1,33 @@
-import fetch from 'node-fetch';
-import dotenv from 'dotenv';
+import rp from 'request-promise-native';
+import fs from 'fs-extra';
 
-dotenv.config();
+// import fetch from 'node-fetch';
+// import dotenv from 'dotenv';
 
-/*
-const instagram = {
-  clientId: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET,
-  accessToken: process.env.ACCESS_TOKEN,
+// dotenv.config();
+
+// const instagram = {
+//  clientId: process.env.CLIENT_ID,
+//  clientSecret: process.env.CLIENT_SECRET,
+//  accessToken: process.env.ACCESS_TOKEN,
+// };
+
+// const url = 'https://api.instagram.com/v1/users/rexiecat/media/recent/?client_id=3bbd61a332384e66a46026c3dbbfaadc';
+
+const queryMock = () => {
+  const request = fs.readFile('./dump/dump.html');
+
+  return request;
 };
-*/
 
-const url = 'https://api.instagram.com/v1/users/rexiecat/media/recent/?client_id=3bbd61a332384e66a46026c3dbbfaadc';
+const queryServer = (url) => {
+  const request = rp(url);
 
-const getUserData = fetch(url);
+  return request
+    .then(content => content)
+    .catch((error) => {
+      throw new Error('error', error);
+    });
+};
 
-getUserData.then((data) => {
-  console.log(data);
-});
+export default (process.env.NODE_ENV === 'dev') ? queryMock : queryServer;

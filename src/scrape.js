@@ -1,21 +1,9 @@
-import rp from 'request-promise-native';
 import { JSDOM } from 'jsdom';
+import query from './query';
 
-const query = (url) => {
-  const request = rp(url);
+const url = 'https://www.instagram.com/rexiecat/?hl=en';
 
-  return request
-    .then(content => content)
-    .catch((error) => {
-      throw new Error('error', error);
-    });
-};
-
-const createDocument = (htmlString) => {
-  const document = new JSDOM(htmlString);
-
-  return document;
-};
+const createDocument = htmlString => new JSDOM(htmlString);
 
 const findScriptTag = (virtualDocument) => {
   const tags = Array.from(virtualDocument.window.document.querySelectorAll('script'));
@@ -30,20 +18,26 @@ const findScriptTag = (virtualDocument) => {
   return tagWithImages;
 };
 
-query('https://www.instagram.com/rexiecat/?hl=en')
+const getValidJson = (textString) => {
+  const validScriptTagContent = textString
+    .replace('window._sharedData = ', '')
+    .slice(0, -1);
+
+  return JSON.parse(validScriptTagContent);
+};
+
+query(url)
   .then((content) => {
     const virtualDocument = createDocument(content);
     const scriptTag = findScriptTag(virtualDocument);
 
-    const scriptTagContent = scriptTag.innerHTML;
+    if (scriptTag === undefined) {
+      throw new Error();
+    }
 
-    // remove invalid semicolon and leading string
-    let validScriptTagContent = scriptTagContent.replace('window._sharedData = ', '');
-    validScriptTagContent = validScriptTagContent.slice(0, -1);
+    const extractedJson = getValidJson(scriptTag.innerHTML);
 
-    const parsedScritpTag = JSON.parse(validScriptTagContent);
-
-    console.log(parsedScritpTag);
+    console.log(extractedJson);
 
     process.exit(0);
   })

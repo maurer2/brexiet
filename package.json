@@ -19,7 +19,8 @@
   "scripts": {
     "query": "node -r esm ./src/query.js",
     "dump": "node -r esm ./src/dump.js",
-    "scrape": "node -r esm ./src/scrape.js",
+    "scrape": "NODE_ENV=prod node -r esm ./src/scrape.js",
+    "scrape:dev": "NODE_ENV=dev node -r esm ./src/scrape.js",
     "lint": "eslint ./src/*.js"
   },
   "devDependencies": {
