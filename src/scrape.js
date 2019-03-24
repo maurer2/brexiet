@@ -21,7 +21,7 @@ const findScriptTag = (virtualDocument) => {
 const getValidJson = (textString) => {
   const validScriptTagContent = textString
     .replace('window._sharedData = ', '')
-    .slice(0, -1);
+    .slice(0, -1); // remove trailing semicolon
 
   return JSON.parse(validScriptTagContent);
 };

@@ -6,6 +6,7 @@
   "author": "Martin",
   "license": "MIT",
   "dependencies": {
+    "canvas": "^2.4.1",
     "dotenv": "^7.0.0",
     "esm": "^3.2.18",
     "fs-extra": "^7.0.1",
@@ -14,13 +15,15 @@
     "node-instagram": "^4.3.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
-    "request-promise-native": "^1.0.7"
+    "request-promise-native": "^1.0.7",
+    "terminal-image": "^0.1.2"
   },
   "scripts": {
     "query": "node -r esm ./src/query.js",
     "dump": "node -r esm ./src/dump.js",
     "scrape": "NODE_ENV=prod node -r esm ./src/scrape.js",
     "scrape:dev": "NODE_ENV=dev node -r esm ./src/scrape.js",
+    "super": "node -r esm ./src/superimpose.js",
     "lint": "eslint ./src/*.js"
   },
   "devDependencies": {
