@@ -2,32 +2,39 @@ import { createCanvas, loadImage } from 'canvas';
 // import terminalImage from 'terminal-image';
 import fs from 'fs-extra';
 
-const canvas = createCanvas(640, 360);
+const canvas = createCanvas(1280, 800);
 const context = canvas.getContext('2d');
+const { width, height } = canvas;
 
 // output
-const newFile = fs.createWriteStream('./dist/test.jpeg');
+const newFile = fs.createWriteStream('./dist/image.jpeg');
+const watermark = '@rexiecat';
 
-loadImage('./dump/image.jpg')
+// font settings
+context.font = '48px "Arial"';
+context.fillStyle = 'black';
+
+const textInfo = context.measureText('Rexie Cat');
+const padding = 40;
+const textWidth = textInfo.width + padding;
+const textHeight = 48 + padding;
+
+loadImage('./dump/dummy.jpg')
   .then((background) => {
-    context.drawImage(background, 0, 0, 640, 480);
+    // background image
+    context.drawImage(background, 0, 0, width, height);
 
-    // font stuff
-    context.font = '48px "Arial"';
-    context.fillStyle = 'black';
-    // context.textAlign = 'center';
-    context.fillText('Rexie Cat', 50, 50);
+    // background text
+    context.fillStyle = 'rgba(0, 0, 0, 0.75)';
+    context.fillRect(width - textWidth, height - textHeight, textWidth, textHeight);
 
-    const canvasAsBuffer = canvas.toBuffer();
+    // text
+    context.fillStyle = 'white';
+    context.fillText(
+      watermark,
+      width - (textWidth - padding / 3),
+      height - (textHeight - (padding * 1.5)),
+    );
 
-    newFile.write(canvasAsBuffer);
-
-    /*
-    const consoleImage = terminalImage.buffer(canvasAsBuffer);
-
-    consoleImage
-      .then((image) => {
-        console.log(image);
-      });
-    */
+    newFile.write(canvas.toBuffer());
   });
